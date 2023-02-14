@@ -12,6 +12,10 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
     message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+if (NOT DEFINED PICO_BOARD)
+    set(PICO_BOARD "pico_w")
+endif()
+
 set(PICO_EXAMPLES_PATH ${PROJECT_SOURCE_DIR})
 
 # Initialize the SDK
