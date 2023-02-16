@@ -75,12 +75,12 @@ int main() {
     struct udp_pcb* my_udp = udp_new_ip_type(IPADDR_TYPE_V4);
     struct pbuf* udp_buffer = NULL;
     udp_buffer = pbuf_alloc(PBUF_TRANSPORT, sizeof(heartbeat), PBUF_RAM);
-    udp_buffer->payload = &heartbeat;
 
     while(true)
     {
         blink(blink_pattern_success_ms, 1);
         heartbeat++;
+        memcpy(udp_buffer->payload, &heartbeat, sizeof(heartbeat));
         err_t status = udp_sendto(my_udp, udp_buffer, &server_ip, port);
         if (status)
         {
