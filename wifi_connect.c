@@ -5,7 +5,7 @@
  */
 
 // cyw43_arch_init etc.
-#include "pico/cyw43_arch.h"
+#include <pico/cyw43_arch.h>
 
 const uint32_t blink_pattern_retry_ms = 250;
 const uint32_t blink_pattern_halt_ms = 500;
