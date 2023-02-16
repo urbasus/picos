@@ -7,6 +7,9 @@
 // cyw43_arch_init etc.
 #include <pico/cyw43_arch.h>
 
+// uint32_t
+#include <stdint.h>
+
 const uint32_t blink_pattern_retry_ms = 250;
 const uint32_t blink_pattern_halt_ms = 500;
 const uint32_t blink_pattern_success_ms = 1000;
@@ -40,6 +43,8 @@ void retry()
     blink(blink_pattern_retry_ms, 2);
 }
 
+static unsigned heartbeat = 0;
+
 int main() {
     /* Initialize wifi driver (and LED GPIO) */
     if (cyw43_arch_init_with_country(CYW43_COUNTRY_SWEDEN) != 0) {
@@ -61,9 +66,25 @@ int main() {
         blink(blink_pattern_retry_ms, abs(code));
     }
 
-    /* Message success */
+    /* Success */
+
+    /* Setup lwip udp */
+    ip_addr_t server_ip;
+    IP4_ADDR(&server_ip, 192, 168, 1, 109); // as seen in router network map, 2023-02-16
+    u16_t port = 44444; // unregistered IANA port
+    struct udp_pcb* my_udp = udp_new_ip_type(IPADDR_TYPE_V4);
+    struct pbuf* udp_buffer = NULL;
+    udp_buffer = pbuf_alloc(PBUF_TRANSPORT, sizeof(heartbeat), PBUF_RAM);
+    udp_buffer->payload = &heartbeat;
+
     while(true)
     {
         blink(blink_pattern_success_ms, 1);
+        heartbeat++;
+        err_t status = udp_sendto(my_udp, udp_buffer, &server_ip, port);
+        if (status)
+        {
+            halt();
+        }
     }
 }
