@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "pico/stdlib.h"
+// cyw43_arch_init etc.
 #include "pico/cyw43_arch.h"
 
 const uint32_t blink_pattern_retry_ms = 250;

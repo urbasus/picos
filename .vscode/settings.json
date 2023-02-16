@@ -1,7 +1,8 @@
 {
    "files.associations": {
       ".hgignore": "ignore",
-      "cyw43_arch.h": "c"
+      "cyw43_arch.h": "c",
+      "stdlib.h": "c"
    },
    "cmake.configureOnOpen": true,
    "C_Cpp.errorSquiggles": "disabled"
